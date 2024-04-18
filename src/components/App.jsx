@@ -49,19 +49,39 @@ export class App extends Component {
   };
 
   deleteContact = id => {
-    console.log(id);
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(item => item.id !== id),
     }));
   };
 
+  componentDidMount() {
+    const contactsStorage = JSON.parse(localStorage.getItem('contacts'));
+    if (contactsStorage) {
+    }
+    this.setState({ contacts: contactsStorage });
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
-    console.log();
+    // console.log();
     const contacts = this.state.contacts;
     const filterValue = this.state.filter.toLowerCase();
     const filtredContacts = contacts.filter(item =>
       item.name.toLowerCase().includes(filterValue)
     );
+
+    // запис
+    // localStorage.setItem('contacts', JSON.stringify(contacts));
+    // читання
+    // const theme = localStorage.getItem('contacts');
+    // console.log(theme); // "dark"
+    // видалення
+    // localStorage.removeItem('contacts');
 
     return (
       <>
